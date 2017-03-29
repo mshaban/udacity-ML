@@ -10,6 +10,7 @@
     Chris has label 1
 """
 
+
 import sys
 from time import time
 sys.path.append("../tools/")
@@ -17,23 +18,40 @@ from email_preprocess import preprocess
 from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import accuracy_score
 from class_vis import output_image, prettyPicture
+from prep_terrain_data import makeTerrainData
+
 ### features_train and features_test are the features for the training
 ### and testing datasets, respectively
 ### labels_train and labels_test are the corresponding item labels
-features_train, features_test, labels_train, labels_test = preprocess()
 
 
 
 
 #########################################################
 ### your code goes here ###
-clf = GaussianNB()
-t0 = time()
-clf.fit(features_train, labels_train)
-print("training time {}s".format(round(time()-t0, 3)))
-t0 = time()
-predict = clf.predict(features_test)
-print("predict time {}s".format(round(time()-t0, 3)))
-accuracy = accuracy_score(labels_test, predict)
-print(accuracy)
+def nb_classifier(features_train, labels_train, features_test, labels_test):
+    clf = GaussianNB()
+    t0 = time()
+    clf.fit(features_train, labels_train)
+    print("training time {}s".format(round(time()-t0, 3)))
+    t0 = time()
+    predict = clf.predict(features_test)
+    print("predict time {}s".format(round(time()-t0, 3)))
+    accuracy = accuracy_score(labels_test, predict)
+    print("Accuracy: {}".format(accuracy))
+    prettyPicture(clf, features_test, labels_test)
+    # output_image("test.png", "png", open("test.png", "rb").read())
 #########################################################
+
+
+def main():
+    features_train, features_test, labels_train, labels_test = preprocess()
+    X_train, y_train, X_test, y_test = makeTerrainData()
+    # nb_classifier(X_train, y_train, X_test, y_test)
+    nb_classifier(features_train, labels_train, features_test, labels_test)
+
+
+
+
+if __name__ == '__main__':
+    main()
