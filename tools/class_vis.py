@@ -1,4 +1,4 @@
-#!/Users/shaban/anaconda/bin/python
+#!/usr/bin/python
 
 # from udacityplots import *
 import base64
